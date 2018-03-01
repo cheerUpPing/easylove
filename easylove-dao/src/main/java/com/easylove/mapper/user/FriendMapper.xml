@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easylove.mapper.user.FriendMapper">
+
+    <sql id="baseColumn">
+        id,tel,email,target_sex,pro_code,city_code,age_start,age_end,height_end,education,job,salary,update_time
+    </sql>
+
+    <resultMap id="baseMap" type="com.easylove.entity.user.Friend">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="target_sex" property="targetSex" jdbcType="INTEGER" />
+        <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+        <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+        <result column="age_start" property="age_start" jdbcType="INTEGER" />
+        <result column="age_end" property="age_end" jdbcType="INTEGER" />
+        <result column="height_start" property="height_start" jdbcType="INTEGER" />
+        <result column="height_end" property="height_end" jdbcType="INTEGER" />
+        <result column="education" property="education" jdbcType="INTEGER" />
+        <result column="salary" property="salary" jdbcType="INTEGER" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="updateColumns">
+        <if test="tel !=null">
+            tel = #{tel},
+        </if>
+        <if test="email !=null">
+            email = #{email},
+        </if>
+        <if test="targetSex !=null">
+            target_sex = #{targetSex},
+        </if>
+        <if test="proCode !=null">
+            pro_code = #{proCode},
+        </if>
+        <if test="cityCode !=null">
+            city_code = #{cityCode},
+        </if>
+        <if test="ageStart !=null">
+            age_start = #{ageStart},
+        </if>
+        <if test="ageEnd !=null">
+            age_end = #{ageEnd},
+        </if>
+        <if test="heightStart !=null">
+            height_start = #{heightStart},
+        </if>
+        <if test="heightEnd !=null">
+            height_end = #{heightEnd},
+        </if>
+        <if test="salary !=null">
+            salary = #{salary},
+        </if>
+        <if test="updateTime !=null">
+            update_time = #{updateTime},
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.easylove.entity.user.Friend">
+        INSERT INTO friend
+        (tel,email,target_sex,pro_code,city_code,age_start,age_end,height_end,education,job,salary,update_time)
+        VALUES
+        (#{tel},#{email},#{targetSex},#{proCode},#{cityCode},#{ageStart},#{ageEnd},#{heightEnd},#{education},#{job},#{salary},#{updateTime})
+    </insert>
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM friend WHERE id = #{id}
+    </delete>
+    <update id="update" parameterType="com.easylove.entity.user.Friend">
+        UPDATE friend
+        <trim prefix="set" suffixOverrides=",">
+            <include refid="updateColumns" />
+        </trim>
+        WHERE id = #{id}
+    </update>
+    <update id="updateByTel" parameterType="com.easylove.entity.user.Friend">
+        UPDATE friend
+        <trim prefix="set" suffixOverrides=",">
+            <include refid="updateColumns" />
+        </trim>
+        WHERE tel = #{tel}
+    </update>
+    <update id="updateByEmail" parameterType="com.easylove.entity.user.Friend">
+        UPDATE friend
+        <trim prefix="set" suffixOverrides=",">
+            <include refid="updateColumns" />
+        </trim>
+        WHERE email = #{email}
+    </update>
+    <select id="select" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT <include refid="baseColumn" /> FROM friend WHERE id = #{id}
+    </select>
+    <select id="selectByTelOrEmail" resultMap="baseMap">
+        SELECT <include refid="baseColumn"/> FROM friend WHERE 1 = 1
+        <if test="tel != null">
+            and tel = #{tel}
+        </if>
+        <if test="email != null">
+            and email = #{email}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easylove.mapper.user.PictureMapper">
+
+    <sql id="baseColumn">
+        id,tel,email,picture_url,description,add_time
+    </sql>
+
+    <resultMap id="baseMap" type="com.easylove.entity.user.Picture">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="picture_url" property="pictureUrl" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="updateColumns">
+        <if test="tel !=null">
+            tel = #{tel},
+        </if>
+        <if test="email !=null">
+            email = #{email},
+        </if>
+        <if test="pictureUrl !=null">
+            picture_url = #{pictureUrl},
+        </if>
+        <if test="description !=null">
+            description = #{description},
+        </if>
+        <if test="add_time !=null">
+            add_time = #{add_time},
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.easylove.entity.user.Picture">
+        INSERT INTO picture
+        (tel,email,picture_url,description,add_time)
+        VALUES
+        (#{tel},#{email},#{pictureUrl},#{description},#{addTime})
+    </insert>
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM picture WHERE id = #{id}
+    </delete>
+    <update id="update" parameterType="com.easylove.entity.user.Picture">
+        UPDATE picture
+        <trim prefix="set" suffixOverrides=",">
+            <include refid="updateColumns" />
+        </trim>
+        WHERE id = #{id}
+    </update>
+    <select id="select" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT <include refid="baseColumn" /> FROM picture WHERE id = #{id}
+    </select>
+
+    <select id="selectByTelOrEmail" resultMap="baseMap">
+        SELECT <include refid="baseColumn" /> FROM picture WHERE 1 =1
+        <if test="tel != null">
+            AND tel = #{tel}
+        </if>
+        <if test="email != null">
+            AND email = #{email}
+        </if>
+    </select>
+
+</mapper>

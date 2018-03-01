@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easylove.mapper.user.PersonMapper">
+
+    <sql id="baseColumn">
+        id,tel,email,pro_code,city_code,curr_pro_code,curr_city_code,is_marry,weight,height,education,job,salary,house,want_kid,accept_remote,like_sex_type,accept_sex,accept_live_togther,most_nice_place,update_time
+    </sql>
+
+    <resultMap id="baseMap" type="com.easylove.entity.user.Person">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+        <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+        <result column="curr_pro_code" property="currProCode" jdbcType="VARCHAR" />
+        <result column="curr_city_code" property="currCityCode" jdbcType="VARCHAR" />
+        <result column="is_marry" property="isMarry" jdbcType="INTEGER" />
+        <result column="weight" property="weight" jdbcType="INTEGER" />
+        <result column="height" property="height" jdbcType="INTEGER" />
+        <result column="education" property="education" jdbcType="INTEGER" />
+        <result column="job" property="job" jdbcType="INTEGER" />
+        <result column="salary" property="salary" jdbcType="INTEGER" />
+        <result column="house" property="house" jdbcType="INTEGER" />
+        <result column="want_kid" property="wantKid" jdbcType="INTEGER" />
+        <result column="accept_remote" property="acceptRemote" jdbcType="INTEGER" />
+        <result column="like_sex_type" property="likeSexType" jdbcType="INTEGER" />
+        <result column="accept_sex" property="acceptSex" jdbcType="INTEGER" />
+        <result column="accept_live_togther" property="acceptLiveTogther" jdbcType="INTEGER" />
+        <result column="most_nice_place" property="mostNicePlace" jdbcType="INTEGER" />
+        <result column="think" property="think" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="updateColumns">
+        <if test="tel !=null">
+            tel = #{tel},
+        </if>
+        <if test="email !=null">
+            email = #{email},
+        </if>
+        <if test="proCode !=null">
+            pro_code = #{proCode},
+        </if>
+        <if test="cityCode !=null">
+            city_code = #{cityCode},
+        </if>
+        <if test="currProCode !=null">
+            curr_pro_code = #{currProCode},
+        </if>
+        <if test="currCityCode !=null">
+            curr_city_code = #{currCityode},
+        </if>
+        <if test="isMarry !=null">
+            is_marry = #{isMarry},
+        </if>
+        <if test="weight !=null">
+            weight = #{weight},
+        </if>
+        <if test="height !=null">
+            height = #{height},
+        </if>
+        <if test="education !=null">
+            education = #{education},
+        </if>
+        <if test="job !=null">
+            job = #{job},
+        </if>
+        <if test="salary !=null">
+            salary = #{salary},
+        </if>
+        <if test="house !=null">
+            house = #{house},
+        </if>
+        <if test="wantKid !=null">
+            want_kid = #{wantKid},
+        </if>
+        <if test="acceptRemote !=null">
+            accept_remote = #{acceptRemote},
+        </if>
+        <if test="likeSexType !=null">
+            like_sex_type = #{likeSexType},
+        </if>
+        <if test="acceptSex !=null">
+            accept_sex = #{acceptSex},
+        </if>
+        <if test="acceptLiveTogther !=null">
+            accept_live_togther = #{acceptLiveTogther},
+        </if>
+        <if test="mostNicePlace !=null">
+            most_nice_place = #{mostNicePlace},
+        </if>
+        <if test="think !=null">
+            think = #{think},
+        </if>
+        <if test="updateTime !=null">
+            update_time = #{updateTime},
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.easylove.entity.user.Person">
+        INSERT INTO person
+        (tel,email,pro_code,city_code,is_marry,weight,height,education,job,salary,house,want_kid,accept_remote,like_sex_type,accept_sex,accept_live_togther,most_nice_place,update_time)
+        VALUES
+        (#{tel},#{email},#{proCode},#{cityCode},#{isMarry},#{weight},#{height},#{education},#{job},#{salary},#{house},#{wantKid},#{acceptRemote},#{likeSexType},#{acceptSex},#{acceptLiveTogther},#{mostNicePlace},#{updateTime})
+    </insert>
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM person WHERE id = #{id}
+    </delete>
+    <update id="update" parameterType="com.easylove.entity.user.Person">
+        UPDATE person
+        <trim prefix="set" suffixOverrides=",">
+            <include refid="updateColumns" />
+        </trim>
+        WHERE id = #{id}
+    </update>
+    <update id="updateByTel" parameterType="com.easylove.entity.user.Person">
+        UPDATE person
+        <trim prefix="set" suffixOverrides=",">
+            <include refid="updateColumns" />
+        </trim>
+        WHERE tel = #{tel}
+    </update>
+    <update id="updateByEmail" parameterType="com.easylove.entity.user.Person">
+        UPDATE person
+        <trim prefix="set" suffixOverrides=",">
+            <include refid="updateColumns" />
+        </trim>
+        WHERE email = #{email}
+    </update>
+    <select id="select" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT <include refid="baseColumn" /> FROM person WHERE id = #{id}
+    </select>
+    <select id="selectByTelOrEmail" resultMap="baseMap">
+        SELECT <include refid="baseColumn"/> FROM person WHERE 1 = 1
+        <if test="tel != null">
+            and tel = #{tel}
+        </if>
+        <if test="email != null">
+            and email = #{email}
+        </if>
+    </select>
+
+</mapper>

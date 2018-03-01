@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easylove.mapper.user.FeatureMapper">
+
+    <sql id="baseColumn">
+        id,feature_name,feature_type
+    </sql>
+
+    <resultMap id="baseMap" type="com.easylove.entity.user.Feature">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="feature_name" property="featureName" jdbcType="VARCHAR" />
+        <result column="feature_type" property="featureType" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="updateColumns">
+        <if test="featureName !=null">
+            feature_name = #{featureName},
+        </if>
+        <if test="featureType !=null">
+            feature_type = #{featureType},
+        </if>
+    </sql>
+
+    <select id="select" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT <include refid="baseColumn" /> FROM friend WHERE id = #{id}
+    </select>
+    <select id="selectByFeatureType" resultMap="baseMap">
+        SELECT <include refid="baseColumn"/> FROM friend WHERE feature_type = #{featureType}
+    </select>
+
+</mapper>
